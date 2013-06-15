@@ -1,7 +1,9 @@
 package figglewatts.conspectus;
 
+import figglewatts.conspectus.tile.Tile;
 import figglewatts.conspectus.util.Util;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,10 +13,17 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 public class MainFrame extends JFrame {
+
+	private JTree tileTree;
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -26,10 +35,10 @@ public class MainFrame extends JFrame {
 	}
 
 	public MainFrame() {
-		initUI();
+		initUI(this);
 	}
 	
-	public final void initUI() {
+	public final void initUI(JFrame frame) {
 		JMenuBar menuBar = new JMenuBar();
 		ImageIcon newIcon = createImageIcon("/images/icons/new.png", "a new icon");
 		ImageIcon openIcon = createImageIcon("/images/icons/open.png", "an open icon");
@@ -44,13 +53,13 @@ public class MainFrame extends JFrame {
 		
 		/* START IMPORT SUBMENU */
 		JMenu imp = new JMenu("Import");
-		JMenuItem impTileSheet = new JMenuItem("Import tilesheet...");
+		JMenuItem impTileSheet = new JMenuItem("Tilesheet...");
 		impTileSheet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				// TODO: import a tile sheet
 			}
 		});
-		JMenuItem impObjectList = new JMenuItem("Import Object List...");
+		JMenuItem impObjectList = new JMenuItem("Object list...");
 		impObjectList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				// TODO: import an object list
@@ -62,13 +71,13 @@ public class MainFrame extends JFrame {
 		
 		/* START EXPORT SUBMENU */
 		JMenu exp = new JMenu("Export");
-		JMenuItem expUntitledGame = new JMenuItem("Export as Untitled Game Format...");
+		JMenuItem expUntitledGame = new JMenuItem("as Untitled Game Format...");
 		expUntitledGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				// TODO: export the level for Untitled Game
 			}
 		});
-		JMenuItem expCMRoguelikeJSON = new JMenuItem("Export as CMRoguelike JSONRoom...");
+		JMenuItem expCMRoguelikeJSON = new JMenuItem("as CMRoguelike JSONRoom...");
 		expCMRoguelikeJSON.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				// TODO: export the level in the JSONRoom format
@@ -86,7 +95,6 @@ public class MainFrame extends JFrame {
 				// TODO: make a new level
 			}
 		});
-		
 		
 		JMenuItem fileMenuOpen = new JMenuItem("Open", openIcon);
 		fileMenuOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
@@ -177,7 +185,7 @@ public class MainFrame extends JFrame {
 		tools.setMnemonic(KeyEvent.VK_T);
 		
 		JMenu genMenu = new JMenu("Generate");
-		JMenuItem genMenuDungeon = new JMenuItem("Generate Dungeon...");
+		JMenuItem genMenuDungeon = new JMenuItem("Dungeon...");
 		genMenuDungeon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				// TODO: open dungeon generation dialog
@@ -210,13 +218,43 @@ public class MainFrame extends JFrame {
 		
 		setJMenuBar(menuBar);
 		
+		/* START MAIN PROGRAM CONTENT */
+		JTabbedPane editingTabPane = new JTabbedPane();
+		
+		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Tiles");
+		createNodes(top);
+		tileTree = new JTree(top);
+		
+		JScrollPane treeView = new JScrollPane(tileTree);
+		
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editingTabPane, treeView);
+		splitPane.setOneTouchExpandable(true);
+		splitPane.setDividerLocation(300);
+		Dimension minimumSize = new Dimension(100, 50);
+		editingTabPane.setMinimumSize(minimumSize);
+		
+		frame.add(splitPane);
+		/* END MAIN PROGRAM CONTENT */
+		
 		setTitle("Conspectus");
-		setSize(300, 200);
+		setSize(500, 400);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	public ImageIcon createImageIcon(String path, String description) {
 		return new ImageIcon(getClass().getResource(path), description);
+	}
+	
+	private void createNodes(DefaultMutableTreeNode top) {
+		DefaultMutableTreeNode category = null;
+		DefaultMutableTreeNode tile = null;
+		
+		// TODO: load tiles from an imported tile list
+		category = new DefaultMutableTreeNode("Environment Tiles");
+		top.add(category);
+		
+		tile = new DefaultMutableTreeNode(new Tile("tile", createImageIcon("/images/icons/new.png", "a new icon")));
+		category.add(tile);
 	}
 }
