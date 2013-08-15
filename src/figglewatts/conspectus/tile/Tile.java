@@ -3,23 +3,23 @@ package figglewatts.conspectus.tile;
 import javax.swing.ImageIcon;
 
 public class Tile {
-	private ImageIcon texture;
-	private String name;
-	public ImageIcon getTexture() {
-		return texture;
+	private int tileID;
+	private int sheetID;
+	public int getTileID() {
+		return tileID;
 	}
-	public void setTexture(ImageIcon texture) {
-		this.texture = texture;
+	public void setTileID(int tileID) {
+		this.tileID = tileID;
 	}
-	public String getName() {
-		return name;
+	public int getSheetID() {
+		return sheetID;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setSheetID(int sheetID) {
+		this.sheetID = sheetID;
 	}
 	
-	public Tile(String name, ImageIcon texture) {
-		this.name = name;
-		this.texture = texture;
+	public Tile(int tileID, int sheetID) {
+		this.tileID = tileID;
+		this.sheetID = sheetID;
 	}
 }
