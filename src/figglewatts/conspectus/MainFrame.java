@@ -231,10 +231,6 @@ public class MainFrame extends JFrame {
 		/* START MAIN PROGRAM CONTENT */
 		JTabbedPane editingTabPane = new JTabbedPane();
 		
-		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Tiles");
-		createNodes(top);
-		tileTree = new JTree(top);
-		
 		JScrollPane treeView = new JScrollPane(tileTree);
 		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, editingTabPane, treeView);
@@ -254,17 +250,5 @@ public class MainFrame extends JFrame {
 	
 	public ImageIcon createImageIcon(String path, String description) {
 		return new ImageIcon(getClass().getResource(path), description);
-	}
-	
-	private void createNodes(DefaultMutableTreeNode top) {
-		DefaultMutableTreeNode category = null;
-		DefaultMutableTreeNode tile = null;
-		
-		// TODO: load tiles from an imported tile list
-		category = new DefaultMutableTreeNode("Environment Tiles");
-		top.add(category);
-		
-		tile = new DefaultMutableTreeNode(new Tile("tile", createImageIcon("/images/icons/new.png", "a new icon")));
-		category.add(tile);
 	}
 }
